@@ -1,6 +1,6 @@
 package com.tiago.patience_service.mapper.Impl;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.time.LocalDate;
+
 import org.springframework.stereotype.Component;
 
 import com.tiago.patience_service.domain.dto.PatientRequestDto;
@@ -10,21 +10,32 @@ import com.tiago.patience_service.mapper.Mapper;
 
 @Component
 public class PatientMapperImpl implements Mapper<PatientEntity, PatientRequestDto, PatientResponseDto>{
-    @Autowired
-    public ModelMapper modelMapper;
-
-    public PatientMapperImpl(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
-    }
 
     @Override
     public PatientResponseDto toDto(PatientEntity entity) {
-        return modelMapper.map(entity, PatientResponseDto.class);
+        PatientResponseDto patientResponse = new PatientResponseDto();
+        
+        patientResponse.setId(entity.getId().toString());
+        patientResponse.setName(entity.getName());
+        patientResponse.setEmail(entity.getEmail());
+        patientResponse.setAddress(entity.getAddress());
+        patientResponse.setDate_of_birth(entity.getDate_of_birth().toString());
+
+        return patientResponse;
     }
 
     @Override
     public PatientEntity toEntity(PatientRequestDto request) {
-        return modelMapper.map(request, PatientEntity.class);
+        PatientEntity patientEntity = new PatientEntity();
+        
+        patientEntity.setId(null);
+        patientEntity.setName(request.getName());
+        patientEntity.setEmail(request.getEmail());
+        patientEntity.setAddress(request.getAddress());
+        patientEntity.setDate_of_birth(LocalDate.parse(request.getDate_of_birth()));
+        patientEntity.setRegistered_date(LocalDate.parse(request.getRegistered_date()));
+
+        return patientEntity;
     }
 
     
