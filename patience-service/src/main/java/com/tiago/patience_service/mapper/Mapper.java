@@ -1,8 +1,8 @@
 package com.tiago.patience_service.mapper;
 
-public interface Mapper<U, V> {
+public interface Mapper<Entity, Request, Response> {
 
-    public V toDto(U u);
+    public Response toDto(Entity a);
     
-    public U toEntity(V v);
+    public Entity toEntity(Request b);
 }
