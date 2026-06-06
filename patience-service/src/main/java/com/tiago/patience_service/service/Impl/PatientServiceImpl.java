@@ -6,7 +6,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tiago.patience_service.domain.dto.PatientDto;
+import com.tiago.patience_service.domain.dto.PatientRequestDto;
+import com.tiago.patience_service.domain.dto.PatientResponseDto;
 import com.tiago.patience_service.domain.model.PatientEntity;
 import com.tiago.patience_service.mapper.Mapper;
 import com.tiago.patience_service.repository.PatientRepository;
@@ -19,17 +20,27 @@ public class PatientServiceImpl implements PatientService {
     private final PatientRepository patientRepository;
 
     @Autowired
-    private final Mapper<PatientEntity, PatientDto> patientMapper;
+    private final Mapper<PatientEntity, PatientRequestDto, PatientResponseDto> patientMapper;
     
-    public PatientServiceImpl(PatientRepository patientRepository, Mapper<PatientEntity, PatientDto> patientMapper) {
+    public PatientServiceImpl(PatientRepository patientRepository,
+                                Mapper<PatientEntity, PatientRequestDto, PatientResponseDto> patientMapper) {
         this.patientRepository = patientRepository;
         this.patientMapper = patientMapper;
     }
 
     @Override
-    public List<PatientDto> getAllPatients() {
+    public List<PatientResponseDto> getAllPatients() {
         List<PatientEntity> pacientes = patientRepository.findAll();
         return pacientes.stream().map(patientMapper::toDto).collect(Collectors.toList());
     }
+
+    @Override
+    public PatientResponseDto createPatient(PatientRequestDto patientRequest) { 
+        PatientEntity patientSaved = patientRepository.save(
+                        patientMapper.toEntity(patientRequest));
+        return patientMapper.toDto(patientSaved);
+    }
+
+    
 
 }
