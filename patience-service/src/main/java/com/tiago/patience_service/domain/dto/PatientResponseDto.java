@@ -1,7 +1,5 @@
 package com.tiago.patience_service.domain.dto;
 
-import java.time.LocalDate;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,7 +19,7 @@ public class PatientResponseDto {
 
     private String address;
 
-    private LocalDate date_of_birth;
+    private String date_of_birth;
 
     
 }

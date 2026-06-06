@@ -1,5 +1,4 @@
 package com.tiago.patience_service.domain.dto;
-import java.time.LocalDate;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -26,10 +25,10 @@ public class PatientRequestDto {
     private String address;
 
     @NotNull(message = "Data de nascimento não pode ser vazio")
-    private LocalDate date_of_birth;
+    private String date_of_birth;
 
     @NotNull(message = "Data de registro não pode ser nulo")
-    private LocalDate registered_date;
+    private String registered_date;
 
 
 }
