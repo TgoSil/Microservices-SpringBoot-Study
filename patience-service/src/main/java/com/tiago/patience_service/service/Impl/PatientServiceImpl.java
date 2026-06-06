@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.tiago.patience_service.domain.dto.PatientRequestDto;
 import com.tiago.patience_service.domain.dto.PatientResponseDto;
 import com.tiago.patience_service.domain.model.PatientEntity;
+import com.tiago.patience_service.exception.EmailAlreadyExistsException;
 import com.tiago.patience_service.mapper.Mapper;
 import com.tiago.patience_service.repository.PatientRepository;
 import com.tiago.patience_service.service.PatientService;
@@ -19,7 +20,6 @@ public class PatientServiceImpl implements PatientService {
     @Autowired
     private final PatientRepository patientRepository;
 
-    @Autowired
     private final Mapper<PatientEntity, PatientRequestDto, PatientResponseDto> patientMapper;
     
     public PatientServiceImpl(PatientRepository patientRepository,
@@ -36,11 +36,12 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public PatientResponseDto createPatient(PatientRequestDto patientRequest) { 
+        if (patientRepository.existsByEmail(patientRequest.getEmail())) {
+            throw new EmailAlreadyExistsException("Email já está sendo usado por outro usuário.");
+        }
         PatientEntity patientSaved = patientRepository.save(
                         patientMapper.toEntity(patientRequest));
         return patientMapper.toDto(patientSaved);
     }
-
     
-
 }

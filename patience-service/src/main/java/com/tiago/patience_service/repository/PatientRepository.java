@@ -10,4 +10,6 @@ import com.tiago.patience_service.domain.model.PatientEntity;
 @Repository
 public interface PatientRepository extends JpaRepository<PatientEntity, UUID>{
 
+    public boolean existsByEmail(String email);
+
 }
