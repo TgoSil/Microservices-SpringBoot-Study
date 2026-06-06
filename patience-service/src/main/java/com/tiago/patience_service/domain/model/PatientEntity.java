@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -20,13 +21,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name="patient")
 public class PatientEntity {
     @Id
     @GeneratedValue(strategy =  GenerationType.AUTO)
     private UUID id;
 
     @NotNull
-    private String nome;
+    private String name;
 
     @NotNull
     @Email
@@ -34,11 +36,11 @@ public class PatientEntity {
     private String email;
 
     @NotNull
-    private String endereco;
+    private String address;
 
     @NotNull
-    private LocalDate dataDeNascimento;
+    private LocalDate date_of_birth;
 
     @NotNull
-    private LocalDate dataRegistro;
+    private LocalDate registered_date;
 }

@@ -11,17 +11,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PatientDto {
+public class PatientResponseDto {
 
     private String id;
 
-    private String nome;
+    private String name;
 
     private String email;
 
-    private String endereco;
+    private String address;
 
-    private LocalDate dataDeNascimento;
+    private LocalDate date_of_birth;
 
     
 }
