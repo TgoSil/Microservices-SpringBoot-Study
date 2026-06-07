@@ -2,7 +2,6 @@ package com.tiago.patience_service.service.Impl;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
