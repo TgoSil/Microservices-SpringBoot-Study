@@ -64,5 +64,13 @@ public class PatientServiceImpl implements PatientService {
 
         return patientMapper.toDto(updatedPatient);
     }
+
+    @Override
+    public void deletePatient(UUID id) {
+        patientRepository.findById(id).orElseThrow(
+            () -> new PatientNotFoundException("Id não vinculado à nenhuma conta: " + id)
+        );
+        patientRepository.deleteById(id);
+    }
     
 }
