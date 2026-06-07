@@ -17,9 +17,12 @@ import com.tiago.patience_service.domain.dto.PatientRequestDto;
 import com.tiago.patience_service.domain.dto.PatientResponseDto;
 import com.tiago.patience_service.service.PatientService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
+@Tag(name = "Patient", description = "API de gestão de pacientes")
 public class PatientController {
 
     private final PatientService patientService;
@@ -29,11 +32,13 @@ public class PatientController {
     }
 
     @GetMapping(path = "patients")
+    @Operation(summary="Get Patients")
     public ResponseEntity<List<PatientResponseDto>> getAll() {
         return ResponseEntity.ok(patientService.getAllPatients());
     }
 
     @PostMapping(path = "patients")
+    @Operation(summary="Create a new Patient")
     public ResponseEntity<PatientResponseDto> postNewPatient(
                 @Valid @RequestBody final PatientRequestDto patientRequest) {      
         PatientResponseDto savedPatient = patientService.createPatient(patientRequest);
@@ -41,6 +46,7 @@ public class PatientController {
     }
 
     @PutMapping(path = "patients/{id}")
+    @Operation(summary = "Update a Patient")
     public ResponseEntity<PatientResponseDto> updatePatient(
         @Valid @RequestBody final PatientRequestDto patientRequest,
         @PathVariable("id") final UUID id) {
@@ -49,6 +55,7 @@ public class PatientController {
     }
 
     @DeleteMapping(path = "patients/{id}")
+    @Operation(summary = "Delete a Patietn")
     public ResponseEntity<Void> deletePatient(@PathVariable("id") final UUID id) {
         patientService.deletePatient(id);
         return ResponseEntity.noContent().build();
