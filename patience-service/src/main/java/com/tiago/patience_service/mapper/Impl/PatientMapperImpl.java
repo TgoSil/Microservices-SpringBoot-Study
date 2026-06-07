@@ -33,7 +33,7 @@ public class PatientMapperImpl implements Mapper<PatientEntity, PatientRequestDt
         patientEntity.setEmail(request.getEmail());
         patientEntity.setAddress(request.getAddress());
         patientEntity.setDate_of_birth(LocalDate.parse(request.getDate_of_birth()));
-        patientEntity.setRegistered_date(LocalDate.parse(request.getRegistered_date()));
+        // patientEntity.setRegistered_date(LocalDate.parse(request.getRegistered_date()));
 
         return patientEntity;
     }

@@ -27,8 +27,8 @@ public class PatientRequestDto {
     @NotNull(message = "Data de nascimento não pode ser vazio")
     private String date_of_birth;
 
-    @NotNull(message = "Data de registro não pode ser nulo")
-    private String registered_date;
+    // @NotNull(message = "Data de registro não pode ser nulo")
+    // private String registered_date;
 
 
 }
