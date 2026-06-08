@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tiago.patience_service.domain.dto.PatientRequestDto;
@@ -13,6 +12,7 @@ import com.tiago.patience_service.domain.dto.PatientResponseDto;
 import com.tiago.patience_service.domain.model.PatientEntity;
 import com.tiago.patience_service.exception.EmailAlreadyExistsException;
 import com.tiago.patience_service.exception.PatientNotFoundException;
+import com.tiago.patience_service.grpc.BillingServiceGrpcClient;
 import com.tiago.patience_service.mapper.Mapper;
 import com.tiago.patience_service.repository.PatientRepository;
 import com.tiago.patience_service.service.PatientService;
@@ -20,15 +20,16 @@ import com.tiago.patience_service.service.PatientService;
 @Service
 public class PatientServiceImpl implements PatientService {
 
-    @Autowired
     private final PatientRepository patientRepository;
-
     private final Mapper<PatientEntity, PatientRequestDto, PatientResponseDto> patientMapper;
+    private final BillingServiceGrpcClient billingServiceClient;
     
     public PatientServiceImpl(PatientRepository patientRepository,
-                                Mapper<PatientEntity, PatientRequestDto, PatientResponseDto> patientMapper) {
+        Mapper<PatientEntity, PatientRequestDto, PatientResponseDto> patientMapper,
+        BillingServiceGrpcClient billingServiceClient) {
         this.patientRepository = patientRepository;
         this.patientMapper = patientMapper;
+        this.billingServiceClient = billingServiceClient;
     }
 
     @Override
@@ -45,6 +46,12 @@ public class PatientServiceImpl implements PatientService {
         PatientEntity patientTemporary = patientMapper.toEntity(patientRequest);
         patientTemporary.setRegistered_date(LocalDate.now());
         PatientEntity patientSaved = patientRepository.save(patientTemporary);
+        
+        billingServiceClient.createBillingAccount(
+            patientSaved.getId().toString(),
+            patientSaved.getName(),
+            patientSaved.getEmail());
+        
         return patientMapper.toDto(patientSaved);
     }
 

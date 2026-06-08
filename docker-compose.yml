@@ -32,6 +32,16 @@ services:
     networks:
       - rede-interna
 
+  billing-service:
+    build: ./billing-service
+    container_name: billing-service
+    restart: always
+    ports:
+      - "4001:4001"
+      - "9001:9001"
+    networks:
+      - rede-interna
+
 networks:
   rede-interna:
     driver: bridge
