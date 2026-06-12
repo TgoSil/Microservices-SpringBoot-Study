@@ -13,6 +13,7 @@ import com.tiago.patience_service.domain.model.PatientEntity;
 import com.tiago.patience_service.exception.EmailAlreadyExistsException;
 import com.tiago.patience_service.exception.PatientNotFoundException;
 import com.tiago.patience_service.grpc.BillingServiceGrpcClient;
+import com.tiago.patience_service.kafka.KafkaProducer;
 import com.tiago.patience_service.mapper.Mapper;
 import com.tiago.patience_service.repository.PatientRepository;
 import com.tiago.patience_service.service.PatientService;
@@ -23,13 +24,15 @@ public class PatientServiceImpl implements PatientService {
     private final PatientRepository patientRepository;
     private final Mapper<PatientEntity, PatientRequestDto, PatientResponseDto> patientMapper;
     private final BillingServiceGrpcClient billingServiceClient;
+    private final KafkaProducer kafkaProducer;
     
     public PatientServiceImpl(PatientRepository patientRepository,
         Mapper<PatientEntity, PatientRequestDto, PatientResponseDto> patientMapper,
-        BillingServiceGrpcClient billingServiceClient) {
+        BillingServiceGrpcClient billingServiceClient, KafkaProducer kafkaProducer) {
         this.patientRepository = patientRepository;
         this.patientMapper = patientMapper;
         this.billingServiceClient = billingServiceClient;
+        this.kafkaProducer = kafkaProducer;
     }
 
     @Override
@@ -51,6 +54,8 @@ public class PatientServiceImpl implements PatientService {
             patientSaved.getId().toString(),
             patientSaved.getName(),
             patientSaved.getEmail());
+
+        kafkaProducer.sendEvent(patientSaved);
         
         return patientMapper.toDto(patientSaved);
     }

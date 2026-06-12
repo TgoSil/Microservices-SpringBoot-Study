@@ -21,7 +21,7 @@ public class BillingServiceGrpcClient {
         @Value("${billing.service.address:billing-service}") String serverAddress,
         @Value("${billing.service.grpc.port:9001}") int serverPort)
     {
-
+        
         log.info("Conenctando em BillingService at {}:{}", serverAddress, serverPort);
 
         ManagedChannel channel = ManagedChannelBuilder.forAddress(serverAddress, serverPort).usePlaintext().build();
