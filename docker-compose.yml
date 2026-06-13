@@ -45,6 +45,19 @@ services:
     networks:
       - rede-interna
 
+  analytics-service:
+    build: ./analytics-service
+    container_name: analytics-service
+    restart: always
+    depends_on:
+      - kafka
+    environment:
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    ports:
+      -  "4002:4002"
+    networks:
+      - rede-interna
+
   kafka:
     image: apache/kafka:4.2.1
     ports:
