@@ -83,6 +83,13 @@ services:
     networks:
       -  rede-interna
 
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      -  "4004:4004"
+    networks:
+      - rede-interna
+
 networks:
   rede-interna:
     driver: bridge
