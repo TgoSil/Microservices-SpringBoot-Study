@@ -27,8 +27,6 @@ services:
       BILLING_SERVICE_ADDRESS: ${BILLING_SERVICE_ADDRESS}
       BILLING_SERVICE_GRPC_PORT: ${BILLING_SERVICE_GRPC_PORT}
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-    ports:
-      - "4000:4000"
     networks:
       - rede-interna
 
@@ -85,6 +83,7 @@ services:
 
   api-gateway:
     build: ./api-gateway
+    container_name: api-gateway
     ports:
       -  "4004:4004"
     networks:
