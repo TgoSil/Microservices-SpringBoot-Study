@@ -89,6 +89,21 @@ services:
     networks:
       - rede-interna
 
+  auth-service-db:
+    image: postgres:18
+    container_name: auth-service-db
+    restart: always
+    environment:
+      - POSTGRES_USER={$POSTGRES_USER}
+      - POSTGRES_PASSWORD={$POSTGRES_PASSWORD}
+      - POSTGRES_DB=db
+    volumes:
+      - ./db_volumes/auth-service-db:/var/lib/postgresql
+    ports:
+      - "5001:5432"
+    networks:
+      - rede-interna
+
 networks:
   rede-interna:
     driver: bridge
